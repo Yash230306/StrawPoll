@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPoll, votePoll } from '../store';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Check } from 'lucide-react';
 
 const VotePoll = () => {
   const { id } = useParams();
@@ -36,16 +36,16 @@ const VotePoll = () => {
 
   if (error) {
     return (
-      <div className="card animate-fade-in" style={{ textAlign: 'center' }}>
-        <div className="card-top-bar"></div>
-        <div className="card-content">
-          <AlertCircle size={48} color="var(--danger)" style={{ margin: '0 auto 1rem' }} />
-          <h1 className="card-title">Oops!</h1>
-          <p className="card-subtitle">{error}</p>
-          <button className="btn btn-primary" onClick={() => navigate('/')}>
-            Create a New Poll
-          </button>
-        </div>
+      <div className="bg-white dark:bg-gray-800 shadow sm:rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 animate-fade-in p-8 text-center">
+        <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Oops!</h1>
+        <p className="text-gray-500 dark:text-gray-400 mb-6">{error}</p>
+        <button 
+          onClick={() => navigate('/')}
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Create a New Poll
+        </button>
       </div>
     );
   }
@@ -53,46 +53,60 @@ const VotePoll = () => {
   if (!poll) return null;
 
   return (
-    <div className="card animate-fade-in">
-      <div className="card-top-bar"></div>
-      <div className="card-content">
-        <h1 className="card-title">{poll.question}</h1>
-        <p className="card-subtitle">Make your choice and click vote.</p>
+    <div className="animate-fade-in pb-12">
+      <div className="bg-white dark:bg-gray-800 shadow sm:rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+        
+        <div className="p-4 sm:p-6 sm:pb-8 border-b border-gray-200 dark:border-gray-700">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{poll.question}</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Make your choice and click vote.</p>
+        </div>
 
-        <div className="vote-options">
-          {poll.options.map((option, index) => (
-            <div
-              key={index}
-              className={`vote-option animate-slide-in ${selectedOption === index ? 'selected' : ''}`}
-              style={{ animationDelay: `${index * 0.05}s` }}
-              onClick={() => setSelectedOption(index)}
+        <div className="p-4 sm:p-6 bg-gray-50 dark:bg-gray-900/50">
+          <div className="space-y-3 mb-6">
+            {poll.options.map((option, index) => {
+              const isSelected = selectedOption === index;
+              return (
+                <div
+                  key={index}
+                  onClick={() => setSelectedOption(index)}
+                  className={`flex items-center space-x-3 p-4 rounded-md border cursor-pointer transition-all ${
+                    isSelected 
+                      ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' 
+                      : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600'
+                  }`}
+                >
+                  <div className={`flex-shrink-0 w-5 h-5 rounded flex items-center justify-center border ${
+                    isSelected ? 'border-indigo-500 bg-indigo-500' : 'border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-700'
+                  }`}>
+                    {isSelected && <Check className="h-4 w-4 text-white" />}
+                  </div>
+                  <span className={`text-base ${isSelected ? 'font-medium text-indigo-900 dark:text-indigo-100' : 'text-gray-700 dark:text-gray-200'}`}>
+                    {option.text}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+            <button
+              onClick={handleVote}
+              disabled={selectedOption === null}
+              className={`w-full sm:w-auto inline-flex justify-center items-center py-2 px-6 border border-transparent shadow-sm text-base font-bold rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors ${
+                selectedOption === null ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
             >
-              <div className="checkbox-square">
-                {selectedOption === index && (
-                  <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 5L5 9L13 1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                )}
-              </div>
-              <span className="vote-text">{option.text}</span>
-            </div>
-          ))}
+              Vote
+            </button>
+            <button
+              onClick={navigateToResults}
+              className="text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+            >
+              Show results
+            </button>
+          </div>
         </div>
 
-        <button 
-          className="btn btn-primary" 
-          onClick={handleVote}
-          disabled={selectedOption === null}
-          style={{ opacity: selectedOption === null ? 0.5 : 1, cursor: selectedOption === null ? 'not-allowed' : 'pointer' }}
-        >
-          Vote
-        </button>
-
-        <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-          <button className="btn btn-secondary" style={{ border: 'none', background: 'transparent' }} onClick={navigateToResults}>
-            Show results
-          </button>
-        </div>
       </div>
     </div>
   );

@@ -1,7 +1,9 @@
 import logo from "./logo.png";
 import "./navbar.css";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const navigate = useNavigate();
   return (
     <div style={{
       position: "sticky",   
@@ -38,7 +40,7 @@ function Navbar() {
 
       <div style={{ display: "flex", gap: "15px", alignItems: "center",marginRight: "100px"  }}>
         
-        <button className="login">Login</button>
+        <button className="login" onClick={() => navigate('/login')}>Login</button>
         <button className="signup">Sign Up</button>
 
       </div>

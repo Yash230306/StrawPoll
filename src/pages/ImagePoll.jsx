@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createPoll } from '../store';
 import { GripVertical, X, Image as ImageIcon, Plus, ChevronDown, Settings2, Shield, Calendar, AlignLeft, EyeOff, Lock, MonitorOff, UserX } from 'lucide-react';
 
-const CreatePoll = () => {
+const ImagePoll = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [options, setOptions] = useState(['', '', '']);
@@ -84,7 +84,7 @@ const CreatePoll = () => {
                 <div className="relative">
                   <select
                     className="block w-full appearance-none border-2 border-gray-200 dark:border-gray-600 rounded-lg p-3 pr-10 text-gray-700 dark:text-gray-200 dark:bg-gray-700 focus:outline-none focus:ring-0 focus:border-indigo-500 font-medium"
-                    defaultValue="multiple"
+                    defaultValue="image"
                     onChange={(e) => {
                       const val = e.target.value;
                       if (val === 'meeting') navigate('/meetings');
@@ -108,43 +108,35 @@ const CreatePoll = () => {
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <label className="block text-sm font-bold text-gray-900 dark:text-gray-100">
-                    Answer Options
+                    Image Options
                   </label>
                   <button type="button" className="text-sm font-medium text-indigo-600 hover:text-indigo-700 dark:text-indigo-400">
                     Paste answers
                   </button>
                 </div>
                 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {options.map((option, index) => (
                     <div key={index} className="flex items-center space-x-2 group">
-                      <div className="cursor-grab p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                      <div className="cursor-grab p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 flex-shrink-0">
                         <GripVertical className="h-5 w-5" />
                       </div>
-                      <div className="relative flex-1 flex items-center">
-                        <input
-                          type="text"
-                          className="w-full border-2 border-gray-200 dark:border-gray-600 rounded-lg p-3 pr-10 focus:ring-0 focus:border-indigo-500 dark:bg-gray-700 dark:text-white transition-colors placeholder-gray-400"
-                          placeholder={`Option ${index + 1}`}
-                          value={option}
-                          onChange={(e) => handleOptionChange(index, e.target.value)}
-                          required={index < 2}
-                        />
-                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center gap-1">
-                          <button type="button" className="p-1 text-gray-400 hover:text-indigo-500 transition-colors">
-                            <ImageIcon className="h-5 w-5" />
-                          </button>
-                          {options.length > 2 && (
-                            <button
-                              type="button"
-                              onClick={() => removeOption(index)}
-                              className="p-1 text-gray-400 hover:text-red-500 transition-colors"
-                              title="Remove option"
-                            >
-                              <X className="h-5 w-5" />
-                            </button>
-                          )}
+                      <div className="relative flex-1 flex flex-col sm:flex-row gap-2 border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 rounded-lg items-center justify-center bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors cursor-pointer">
+                        <div className="flex flex-col items-center justify-center text-center p-2">
+                           <ImageIcon className="h-8 w-8 text-indigo-400 mb-2" />
+                           <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">Click to upload an image</p>
+                           <p className="text-xs text-gray-500 dark:text-gray-400">or drag and drop</p>
                         </div>
+                        {options.length > 2 && (
+                          <button
+                            type="button"
+                            onClick={() => removeOption(index)}
+                            className="absolute top-2 right-2 p-1 text-gray-400 hover:text-red-500 transition-colors"
+                            title="Remove option"
+                          >
+                            <X className="h-5 w-5" />
+                          </button>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -156,10 +148,7 @@ const CreatePoll = () => {
                     onClick={addOption}
                     className="inline-flex items-center px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 dark:hover:bg-indigo-900/50 rounded-lg text-sm font-semibold transition-colors"
                   >
-                    Add option
-                  </button>
-                  <button type="button" className="text-sm font-medium text-indigo-600 hover:text-indigo-700 dark:text-indigo-400">
-                    Add "Other"
+                    Add image option
                   </button>
                 </div>
               </div>
@@ -304,7 +293,7 @@ const CreatePoll = () => {
                 type="submit"
                 className="w-full sm:w-auto flex justify-center py-3 px-8 border border-transparent rounded-lg shadow-sm text-lg font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
               >
-                Create Poll
+                Create Image Poll
               </button>
             </div>
           </form>
@@ -375,4 +364,4 @@ const CreatePoll = () => {
   );
 };
 
-export default CreatePoll;
+export default ImagePoll;

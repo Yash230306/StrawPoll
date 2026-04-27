@@ -7,7 +7,7 @@ const Layout = () => {
     <div className="app-container">
       <header className="header">
         <Link to="/" className="logo">
-          <BarChart3 className="logo-icon" size={28} />
+          <BarChart3 className="logo-icon" size={24} />
           <span>StrawPoll</span>
         </Link>
       </header>

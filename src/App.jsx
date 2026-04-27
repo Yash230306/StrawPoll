@@ -4,7 +4,6 @@ import Layout from './components/Layout';
 import CreatePoll from './pages/CreatePoll';
 import VotePoll from './pages/VotePoll';
 import PollResults from './pages/PollResults';
-import './App.css';
 
 function App() {
   return (

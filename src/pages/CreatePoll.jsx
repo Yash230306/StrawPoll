@@ -7,7 +7,7 @@ const CreatePoll = () => {
   const navigate = useNavigate();
   const [question, setQuestion] = useState('');
   const [options, setOptions] = useState(['', '', '']);
-  const [activeTab, setActiveTab] = useState('multiple');
+  const activeTab = 'multiple';
 
   // Settings
   const [allowMultiple, setAllowMultiple] = useState(false);
@@ -64,8 +64,12 @@ const CreatePoll = () => {
               const isActive = activeTab === tab.id;
               return (
                 <button
+                  type="button"
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => {
+                    if (tab.id === 'meeting') navigate('/meetings');
+                    else if (tab.id === 'multiple') navigate('/');
+                  }}
                   className={`w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm flex flex-col items-center justify-center sm:flex-row sm:space-x-2 transition-colors ${
                     isActive
                       ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 bg-white dark:bg-gray-800'

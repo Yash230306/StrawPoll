@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Settings2, Plus, X, ChevronLeft, ChevronRight, Clock } from 'lucide-react';
+import { Settings2, Plus, X, ChevronLeft, ChevronRight, Clock, BarChart2, Calendar, Image as ImageTabIcon, ListOrdered } from 'lucide-react';
 import { createPoll } from '../store';
 
 const ScheduleMeeting = () => {
@@ -136,6 +136,14 @@ const ScheduleMeeting = () => {
     return days;
   };
 
+  const tabs = [
+    { id: 'multiple', name: 'Multiple choice', icon: BarChart2 },
+    { id: 'meeting', name: 'Meeting poll', icon: Calendar },
+    { id: 'image', name: 'Image poll', icon: ImageTabIcon },
+    { id: 'ranking', name: 'Ranking poll', icon: ListOrdered },
+  ];
+  const activeTab = 'meeting';
+
   return (
     <div className="animate-fade-in pb-12">
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Schedule a Meeting</h1>
@@ -143,6 +151,34 @@ const ScheduleMeeting = () => {
 
       <div className="bg-white dark:bg-gray-800 shadow sm:rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
         
+        {/* Tabs */}
+        <div className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+          <nav className="-mb-px flex" aria-label="Tabs">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  type="button"
+                  key={tab.id}
+                  onClick={() => {
+                    if (tab.id === 'meeting') navigate('/meetings');
+                    else if (tab.id === 'multiple') navigate('/');
+                  }}
+                  className={`w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm flex flex-col items-center justify-center sm:flex-row sm:space-x-2 transition-colors ${
+                    isActive
+                      ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 bg-white dark:bg-gray-800'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+                  }`}
+                >
+                  <Icon className={`h-5 w-5 ${isActive ? 'text-indigo-500 dark:text-indigo-400' : 'text-gray-400'}`} />
+                  <span className="mt-1 sm:mt-0 hidden sm:block">{tab.name}</span>
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+
         <form onSubmit={handleSubmit}>
           <div className="p-4 sm:p-6 space-y-6">
             
